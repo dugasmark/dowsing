@@ -1,0 +1,1 @@
+angular.module('dowsing', ['colorpicker.module']);
