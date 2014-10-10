@@ -1,0 +1,4 @@
+dowsing
+=======
+
+Dowsing plan generator
