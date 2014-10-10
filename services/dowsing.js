@@ -68,14 +68,14 @@ angular.module('dowsing').provider("dowsing", function(){
                 var canvas = document.querySelector("canvas"),
                 context = canvas.getContext("2d");
                     context.fillStyle= "#ffffff";
-                    context.fillRect(0,0,800,450);
+                    context.fillRect(0,0,850,500);
 
 
                 var image = new Image;
                 image.src = imgsrc;
                 image.onload = function() {
 
-                  context.drawImage(image, 0, 0);
+                  context.drawImage(image, 25, 25);
 
                   var canvasdata = canvas.toDataURL("image/png");
 

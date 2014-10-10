@@ -43,7 +43,9 @@ angular.module('dowsing').directive('plan', function() {
 			                .attr("class", "slice");    
 			 
 			        arcs.append("svg:g").append("svg:path")
-			                .attr("fill", function(d, i) { return (data[i].color) ? data[i].color : color(i); } ) 
+			                .attr("fill", function(d, i) { return (data[i].color) ? data[i].color : color(i); } )
+			                .style('stroke', 'black')
+  							.style('stroke-width', '1.3')
 			                .attr("d", arc);                                    
 			
 			        arcs.append("svg:text")     
