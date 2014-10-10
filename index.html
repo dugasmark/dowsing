@@ -9,36 +9,37 @@
 <body>
 	<section ng-controller="interface" class="container">
 		<div class="row">
+			<section class="col-sm-10">
+				<h1>Générateur planches de radiesthésie</h1>
+			</section>
+			<section class="col-sm-2">
+				<button type="button" title="Sauvegarder" class="btn btn-success pull-right" ng-click="dowsing.save()">Sauvegarder</button>
+				<canvas width="800" height="450" style="display:none"></canvas>
+			</section>
 			<section class="col-sm-4">
-					<button type="button" title="Ajouter" class="btn btn-primary" ng-click="dowsing.add()">+</button>
-					<button type="button" title="Sauvegarder" class="btn btn-success pull-right" ng-click="dowsing.save()">Sauvegarder</button>
-					<!--div id="pngdataurl"></div-->
-					<!--div id="svgdataurl"></div-->
-					<canvas width="800" height="450" style="display:none"></canvas>
-
-					<input type="text" class="form-control" ng-model="dowsing.title" value="{{title}}">
-
-					<div ng-repeat="outer in dowsing.datas.outer" class="input-group">
-						<span class="input-group-addon">{{$index + 1}}</span>
-						<input type="text" class="form-control" ng-model="dowsing.datas.inner[$index].label" ng-change="dowsing.modifyInner(dowsing.datas.inner[$index].label,$index)" value="{{dowsing.datas.inner[$index].label}}">
-						<input type="text" class="form-control" ng-model="outer.label" ng-change="dowsing.modifyOuter(outer.label,$index)" value="{{outer.label}}">
-						<span class="input-group-addon">
-							<button  colorpicker type="button" class="btn btn-default" ng-model="outer.color" ng-change="dowsing.setColor(outer.color,$index)">Couleur</button >
-							<button type="button" title="supprimer" class="btn btn-danger" ng-click="dowsing.remove($index)">-</button>
-						</span>
-					</div>
+			<div class="row">
+				<div class="col-sm-9">
+					<input type="text" class="form-control" ng-model="dowsing.title" value="{{title}}" placeholder="Titre de la planche">
+				</div>
+				<div class="col-sm-3">
+					<button type="button" title="Ajouter" class="btn btn-primary pull-right" ng-click="dowsing.add()"><span class="glyphicon glyphicon-plus"></span></button>
+				</div>
+			</div>	
+				<div ng-repeat="outer in dowsing.datas.outer" class="input-group">
+					<span class="input-group-addon">{{$index + 1}}</span>
+					<input type="text" class="form-control" ng-model="dowsing.datas.inner[$index].label" ng-change="dowsing.modifyInner(dowsing.datas.inner[$index].label,$index)" value="{{dowsing.datas.inner[$index].label}}">
+					<input type="text" class="form-control" ng-model="outer.label" ng-change="dowsing.modifyOuter(outer.label,$index)" value="{{outer.label}}">
+					<span class="input-group-addon">
+						<button  colorpicker type="button" class="btn btn-default" ng-model="outer.color" ng-change="dowsing.setColor(outer.color,$index)"><span class="glyphicon glyphicon-tint"></span></button >
+						<button type="button" title="supprimer" class="btn btn-danger" ng-click="dowsing.remove($index)"><span class="glyphicon glyphicon-minus"></span></button>
+					</span>
+				</div>
 
 			</section>
 			<section class="col-sm-8">
 				<plan data="dowsing" width="800" height="450" radius="400" inner="205">
-					<svg>
-						
-					</svg>
-					
-				</plan>
-				<!--plan data="dowsing.datas.inner" width="800" height="450" radius="200" inner="0">
 					<svg></svg>
-				</plan-->
+				</plan>
 			</section>
 		</div>
 	</section>
