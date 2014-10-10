@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html ng-app="radie">
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css">
+</head>
+<body>
+
+	<section ng-controller="interface" class="container">
+		<div class="row">
+			<section class="col-sm-4">
+					<button type="button" title="Ajouter" class="btn btn-default" ng-click="add()">+</button>
+					<button type="button" title="Sauvegarder" class="btn btn-primary pull-right" ng-click="save()">Sauvegarder</button>
+					<!--div id="pngdataurl"></div-->
+					<!--div id="svgdataurl"></div-->
+					<canvas width="800" height="450" style="display:none"></canvas>
+
+					<input type="text" class="form-control" ng-model="title" value="{{title}}">
+
+					<div ng-repeat="outer in datas.outer" class="input-group">
+						<span class="input-group-addon">{{$index + 1}}</span>
+						<input type="text" class="form-control" ng-model="datas.inner[$index].label" ng-change="modifyInner(datas.inner[$index].label,$index)" value="{{datas.inner[$index].label}}">
+						<input type="text" class="form-control" ng-model="outer.label" ng-change="modifyOuter(outer.label,$index)" value="{{outer.label}}">
+						<span class="input-group-addon">
+							<button  colorpicker type="button" class="btn btn-default" ng-model="outer.color" ng-change="setColor(outer.color,$index)">Couleur</button >
+							<button type="button" title="supprimer" class="btn btn-danger" ng-click="remove($index)">-</button>
+						</span>
+					</div>
+
+			</section>
+			<section class="col-sm-8">
+				<plan data="datas.outer" title="title" width="800" height="450" radius="400" inner="205">
+					<svg>
+						
+					</svg>
+					
+				</plan>
+				<plan data="datas.inner" width="800" height="450" radius="200" inner="0">
+					<svg></svg>
+				</plan>
+			</section>
+		</div>
+	</section>
+	
+	
+
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/d3/d3.min.js" charset="utf-8"></script>
+	<script src="bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js" charset="utf-8"></script>
+	<!--script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script-->
+
+	<script type="text/javascript">
+
+		var mainApp = angular.module('radie', ['colorpicker.module']);
+
+		mainApp.controller('interface', function ($scope) {
+			$scope.test = 'hello';
+
+
+			$scope.title = "Titre";
+			$scope.datas = {};
+			$scope.datas.outer = [{"label":"Extérieur 1", "value":60, "color": "#2682c7"}, 
+					            {"label":"Extérieur 2", "value":60, "color": "#55a8e6"}, 
+					            {"label":"Extérieur 3", "value":60,"color":"#9dcbed"}];
+
+			$scope.datas.inner = [{"label":"Intérieur 1", "value":60, "color": "#2682c7"}, 
+					            {"label":"Intérieur 2", "value":60, "color": "#55a8e6"}, 
+					            {"label":"Intérieur 3", "value":60,"color":"#9dcbed"}];
+
+			$scope.setColor = function (color,index) {
+				console.log('color',color);
+				$scope.datas.inner[index].color = color;
+			}
+
+			$scope.add = function () {
+				$scope.datas.inner.push({"label":'Intérieur '+ (parseInt($scope.datas.inner.length,10) + 1), "value":60})
+				$scope.datas.outer.push({"label":'Extérieur '+ (parseInt($scope.datas.outer.length,10) + 1), "value":60})
+			}
+
+			$scope.remove = function (index) {
+           		$scope.datas.outer.splice(index, 1);  
+           		$scope.datas.inner.splice(index, 1);  
+			}
+
+			$scope.modifyOuter = function(value, index) {
+				console.log('modifyOuter',value, index);
+				$scope.datas.outer[index].label = value;
+			}
+
+			$scope.modifyInner = function(value, index) {
+				console.log('modifyInner',value, index);
+				$scope.datas.inner[index].label = value;
+			};
+
+			$scope.modifyTitle = function(value) {
+				console.log('modifyTitle',value);
+				$scope.datas.title = value;
+			};
+
+			$scope.save = function() {
+				var html = d3.select("svg")
+				    .attr("version", 1.1)
+				    .attr("xmlns", "http://www.w3.org/2000/svg")
+				    .node().parentNode.innerHTML;
+
+				var imgsrc = 'data:image/svg+xml;base64,'+ btoa(unescape(encodeURIComponent(html)));
+				 /*
+				console.log(html);
+				
+				var img = '<img src="'+imgsrc+'">'; 
+				d3.select("#svgdataurl").html(img);
+				*/
+
+				var canvas = document.querySelector("canvas"),
+				context = canvas.getContext("2d");
+ 				context.fillStyle= "#ffffff";
+ 				context.fillRect(0,0,800,450);
+
+
+				var image = new Image;
+				image.src = imgsrc;
+				image.onload = function() {
+
+				  context.drawImage(image, 0, 0);
+
+				  var canvasdata = canvas.toDataURL("image/png");
+
+				  var pngimg = '<img src="'+canvasdata+'">'; 
+					  //d3.select("#pngdataurl").html(pngimg);
+
+				  var a = document.createElement("a");
+				  a.download = "plan.png";
+				  a.href = canvasdata;
+				  a.click();
+				};
+			}
+			
+		}).directive('plan', function() {
+
+
+			function load (scope,data) {
+				var w = scope.width,                        //width
+				    h = scope.height,                            //height
+				    r = scope.radius,                            //radius
+				    ir = scope.inner,
+				    pi = Math.PI,
+				    color = d3.scale.category20c();     
+
+				if (!data) return;
+
+			    var vis = d3.select("svg")
+			        .data([data])          
+			            .attr("width", w)  
+			            .attr("height", h)
+			            .append("svg:g")       
+			            	.attr("transform", "translate(" + w/2 + "," + h + ")");
+
+
+			      if (scope.title) {
+
+
+			      	vis.append("rect")
+						.attr("width", w)
+						.attr("height", 40)
+						.attr("fill", "white")
+						.attr("transform", "translate(" + -w/2 + "," + -h + ")"); 
+
+			      	vis.append("svg:text")
+						.attr("text-anchor", "middle") 
+						.attr("transform","translate(0,-420)")
+						.style("font-size","28px")                 
+						.style("background-color","white")                 
+				        .attr("fill", "black") 
+						.text(scope.title);
+			      }
+				
+			    
+			 
+			    var arc = d3.svg.arc()              
+			        .outerRadius(r)
+					.innerRadius(ir);
+			 
+			    var pie = d3.layout.pie()           
+			        .value(function(d) { return d.value; })
+			        .startAngle(-90 * (pi/180))
+			        .endAngle(90 * (pi/180));
+			 
+			    var arcs = vis.selectAll("g.slice")     
+			        .data(pie)                          
+			        .enter()                            
+			            .append("svg:g")                
+			                .attr("class", "slice");    
+			 
+			        arcs.append("svg:g").append("svg:path")
+			                .attr("fill", function(d, i) { return (data[i].color) ? data[i].color : color(i); } ) 
+			                .attr("d", arc);                                    
+			
+			        arcs.append("svg:text")     
+			                                      
+			            .attr("transform", function(d) {                    
+			                d.outerRadius = r + 50; // Set Outer Coordinate
+		        			d.innerRadius = r + 45;
+			                return "translate(" + arc.centroid(d) + ") rotate(" + angle(d) + ")";        
+			            })
+
+			            .attr("text-anchor", "middle")        
+			            .style("font-size","16px")                 
+			            .attr("fill", "black")                          
+			            .text(function(d, i) { return data[i].label; });
+
+
+			        function angle(d) {
+						var a = (d.startAngle + d.endAngle) * 90 / Math.PI - 90;
+						console.log('angle',a);
+						return -a > 90 ? a - 180 : a;
+					} 
+
+			}
+
+
+			return {
+				restrict: 'E',
+				//transclude: true,
+				scope: {
+					'data' : '=',
+					'width' : '=',
+					'height' : '=',
+					'radius' : '=',
+					'inner' : '=',
+					'title' : '='
+				},
+				link: function(scope, elem, attrs) {
+					console.log(scope);
+					load(scope,scope.data);
+					scope.$watch('data', function(newValue, oldValue) {
+			        	if (newValue !== oldValue) {
+			        		load(scope,newValue);
+			        	}
+				    }, true);
+
+				    scope.$watch('title', function(newValue, oldValue) {
+			        	if (newValue !== oldValue) {
+			        		load(scope,scope.data);
+			        	}
+				    }, true);
+				}
+			};
+
+		});
+
+		
+    
+	</script>
+</body>
+</html>

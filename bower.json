@@ -1,0 +1,10 @@
+{
+    "name": "dowsing",
+    "dependencies": {
+        "angular": "latest",
+        "angular-bootstrap-colorpicker": "latest",
+        "bootstrap": "latest",
+        "d3": "latest",
+        "jquery": "2.1.1"
+    }
+}
