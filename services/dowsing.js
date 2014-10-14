@@ -63,14 +63,17 @@ angular.module('dowsing').provider("dowsing", function(){
                 var image = new Image;
                 image.src = imgsrc;
                 image.onload = function() {
-                  context.drawImage(image, 25, 25);
-                  var canvasdata = canvas.toDataURL("image/png");
-                  var pngimg = '<img src="'+canvasdata+'">'; 
+                    context.drawImage(image, 25, 25);
+                    var canvasdata = canvas.toDataURL("image/png");
+                    var pngimg = '<img src="'+canvasdata+'">'; 
 
-                  var a = document.createElement("a");
-                  a.download = "plan.png";
-                  a.href = canvasdata;
-                  a.click();
+                    var a = document.createElement("a");
+                    a.download = "planche.png";
+                    a.href = canvasdata;
+
+                    var evt = document.createEvent('MouseEvents');
+                    evt.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+                    a.dispatchEvent(evt);
                 };
             }
         }
