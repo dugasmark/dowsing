@@ -22,7 +22,6 @@ angular.module('dowsing').provider("dowsing", function(){
                 ]
             },
             setColor: function (color,index) {
-                console.log('color',color);
                 this.datas.inner[index].color = color;
             },
 
@@ -37,17 +36,14 @@ angular.module('dowsing').provider("dowsing", function(){
             },
 
             modifyOuter : function(value, index) {
-                console.log('modifyOuter',value, index);
                 this.datas.outer[index].label = value;
             },
 
             modifyInner : function(value, index) {
-                console.log('modifyInner',value, index);
                 this.datas.inner[index].label = value;
             },
 
             modifyTitle : function(value) {
-                console.log('modifyTitle',value);
                 this.datas.title = value;
             },
 
@@ -58,29 +54,18 @@ angular.module('dowsing').provider("dowsing", function(){
                     .node().parentNode.innerHTML;
 
                 var imgsrc = 'data:image/svg+xml;base64,'+ btoa(unescape(encodeURIComponent(html)));
-                 /*
-                console.log(html);
-                
-                var img = '<img src="'+imgsrc+'">'; 
-                d3.select("#svgdataurl").html(img);
-                */
 
                 var canvas = document.querySelector("canvas"),
                 context = canvas.getContext("2d");
-                    context.fillStyle= "#ffffff";
-                    context.fillRect(0,0,850,500);
-
+                context.fillStyle= "#ffffff";
+                context.fillRect(0,0,850,500);
 
                 var image = new Image;
                 image.src = imgsrc;
                 image.onload = function() {
-
                   context.drawImage(image, 25, 25);
-
                   var canvasdata = canvas.toDataURL("image/png");
-
                   var pngimg = '<img src="'+canvasdata+'">'; 
-                      //d3.select("#pngdataurl").html(pngimg);
 
                   var a = document.createElement("a");
                   a.download = "plan.png";
