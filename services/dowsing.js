@@ -47,6 +47,47 @@ angular.module('dowsing').provider("dowsing", function(){
                 this.datas.title = value;
             },
 
+            minusOuterPositionX : function (index) {
+            	var p = (this.datas.outer[index].labelX) ? this.datas.outer[index].labelX : 0;
+            	this.datas.outer[index].labelX = p - 1;
+            },
+
+            plusOuterPositionX : function (index) {
+            	var p = (this.datas.outer[index].labelX) ? this.datas.outer[index].labelX : 0;
+            	this.datas.outer[index].labelX = p + 1;
+            },
+
+            minusOuterPositionY : function (index) {
+            	var p = (this.datas.outer[index].labelY) ? this.datas.outer[index].labelY : 0;
+            	this.datas.outer[index].labelY = p - 1;
+            },
+
+            plusOuterPositionY : function (index) {
+            	var p = (this.datas.outer[index].labelY) ? this.datas.outer[index].labelY : 0;
+            	this.datas.outer[index].labelY = p + 1;
+            },
+
+            minusInnerPositionX : function (index) {
+            	var p = (this.datas.inner[index].labelX) ? this.datas.inner[index].labelX : 0;
+            	this.datas.inner[index].labelX = p - 1;
+            },
+
+            plusInnerPositionX : function (index) {
+            	var p = (this.datas.inner[index].labelX) ? this.datas.inner[index].labelX : 0;
+            	this.datas.inner[index].labelX = p + 1;
+            },
+
+            minusInnerPositionY : function (index) {
+            	var p = (this.datas.inner[index].labelY) ? this.datas.inner[index].labelY : 0;
+            	this.datas.inner[index].labelY = p - 1;
+            },
+
+            plusInnerPositionY : function (index) {
+            	var p = (this.datas.inner[index].labelY) ? this.datas.inner[index].labelY : 0;
+            	this.datas.inner[index].labelY = p + 1;
+            },
+
+
             save : function() {
                 var html = d3.select("svg")
                     .attr("version", 1.1)
@@ -54,7 +95,7 @@ angular.module('dowsing').provider("dowsing", function(){
                     .node().parentNode.innerHTML;
 
                 var imgsrc = 'data:image/svg+xml;base64,'+ btoa(unescape(encodeURIComponent(html)));
-
+                console.log(imgsrc);
                 var canvas = document.querySelector("canvas"),
                 context = canvas.getContext("2d");
                 context.fillStyle= "#ffffff";

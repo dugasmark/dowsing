@@ -25,11 +25,37 @@
 			</div>	
 				<div ng-repeat="outer in dowsing.datas.outer" class="input-group">
 					<span class="input-group-addon">{{$index + 1}}</span>
-					<input type="text" class="form-control" ng-model="dowsing.datas.inner[$index].label" ng-change="dowsing.modifyInner(dowsing.datas.inner[$index].label,$index)" value="{{dowsing.datas.inner[$index].label}}">
-					<input type="text" class="form-control" ng-model="outer.label" ng-change="dowsing.modifyOuter(outer.label,$index)" value="{{outer.label}}">
+
+					<div class="input-group">
+						<span class="input-group-btn">
+							<button class="btn btn-default" ng-model="dowsing.datas.inner[$index].labelX" ng-click="dowsing.minusInnerPositionX($index)"><span class="glyphicon glyphicon-arrow-left"></span></button>
+							<button class="btn btn-default" ng-model="dowsing.datas.inner[$index].labelX" ng-click="dowsing.plusInnerPositionX($index)"><span class="glyphicon glyphicon-arrow-right"></span></button>
+						</span>
+						<input type="text" class="form-control" ng-model="dowsing.datas.inner[$index].label" ng-change="dowsing.modifyInner(dowsing.datas.inner[$index].label,$index)" value="{{dowsing.datas.inner[$index].label}}">
+						<span class="input-group-btn">
+							<button class="btn btn-default" ng-model="dowsing.datas.inner[$index].labelX" ng-click="dowsing.minusInnerPositionY($index)"><span class="glyphicon glyphicon-arrow-up"></span></button>
+							<button class="btn btn-default" ng-model="dowsing.datas.inner[$index].labelX" ng-click="dowsing.plusInnerPositionY($index)"><span class="glyphicon glyphicon-arrow-down"></span></button>
+						</span>
+					</div>
+					
+
+					<div class="input-group">
+						<span class="input-group-btn">
+							<button class="btn btn-default" ng-model="outer.labelX" ng-click="dowsing.minusOuterPositionX($index)"><span class="glyphicon glyphicon-arrow-left"></span></button>
+							<button class="btn btn-default" ng-model="outer.labelX" ng-click="dowsing.plusOuterPositionX($index)"><span class="glyphicon glyphicon-arrow-right"></span></button>
+						</span>
+						<input type="text" class="form-control" ng-model="outer.label" ng-change="dowsing.modifyOuter(outer.label,$index)" value="{{outer.label}}">
+						<span class="input-group-btn">
+							<button class="btn btn-default" ng-model="outer.labelX" ng-click="dowsing.minusOuterPositionY($index)"><span class="glyphicon glyphicon-arrow-up"></span></button>
+							<button class="btn btn-default" ng-model="outer.labelX" ng-click="dowsing.plusOuterPositionY($index)"><span class="glyphicon glyphicon-arrow-down"></span></button>
+						</span>
+					</div>
+
 					<span class="input-group-addon">
-						<button  colorpicker type="button" class="btn btn-default" ng-model="outer.color" ng-change="dowsing.setColor(outer.color,$index)"><span class="glyphicon glyphicon-tint"></span></button >
-						<button type="button" title="supprimer" class="btn btn-danger" ng-click="dowsing.remove($index)"><span class="glyphicon glyphicon-minus"></span></button>
+						<div class="btn-group-vertical">
+							<button  colorpicker type="button" class="btn btn-xs btn-default" ng-model="outer.color" ng-change="dowsing.setColor(outer.color,$index)"><span class="glyphicon glyphicon-tint"></span></button >
+							<button type="button" title="supprimer" class="btn btn-xs btn-danger" ng-click="dowsing.remove($index)"><span class="glyphicon glyphicon-minus"></span></button>
+						</div>
 					</span>
 				</div>
 

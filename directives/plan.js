@@ -93,6 +93,21 @@ angular.module('dowsing').directive('plan', function() {
 				});
 
 
+			var texts = vis.selectAll("g.radie-label")
+							.attr("transform", function(d,i) {
+					
+								var x = (data[i].labelX) ? data[i].labelX : 0;
+								var y = (data[i].labelY) ? data[i].labelY : 0;
+							
+								var formule = x + "," + y;
+								console.log('formule',formule);
+						
+								return "translate(" + formule + ")";
+
+								
+								
+							});
+
 		function angle(d) {
 			var a = (d.startAngle + d.endAngle) * 90 / Math.PI - 90;
 			return -a > 90 ? a - 180 : a;
