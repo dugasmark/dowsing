@@ -19,7 +19,7 @@ angular.module('dowsing').directive('plan', function() {
 			vis.append("svg:text")
 				.attr("text-anchor", "middle")
 				.attr("transform", "translate(0,-420)")
-				.style("font-size", "28px")
+				.style("font", "32px 'Open Sans',sans-serif")
 				.style("background-color", "white")
 				.attr("fill", "black")
 				.text(title);
@@ -52,7 +52,6 @@ angular.module('dowsing').directive('plan', function() {
 			.style('stroke-width', '1.3')
 			.attr("d", arc);
 
-
 		arcs.append('g').attr("class", "radie-label")
 			.append("foreignObject")
 			.attr("width", function(d) {
@@ -63,7 +62,8 @@ angular.module('dowsing').directive('plan', function() {
 				d.outerRadius = r + 50;
 				d.innerRadius = r + 45;
 				var c = arc.centroid(d);	
-
+				return "translate(" + c[0] + "," + c[1] + ") rotate(" + angle(d) + ")";
+				
 				if (leftToRight(d)) {
 				
 					if (title) {
@@ -78,9 +78,14 @@ angular.module('dowsing').directive('plan', function() {
 						return "translate(" + c[0] * 0.5 + "," + c[1] * 0.5 + ") rotate(" + angle(d) + ")";
 					}
 				}
+				
 			})
+			.append('xhtml:body')
+			.style("background-color", 'transparent')
+			.attr("xmlns", 'http://www.w3.org/1999/xhtml')
 			.append("xhtml:p")
-				.style("font", "16px 'Helvetica Neue',sans-serif")
+				.style("font", "16px 'Open Sans',sans-serif")
+				.style("color", 'black')
 				//.style("background-color", "#ffffff")
 				.style("word-wrap", "break-word")
 				.style("text-align", function(d) {

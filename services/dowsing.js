@@ -93,7 +93,7 @@ angular.module('dowsing').provider("dowsing", function(){
                     .attr("version", 1.1)
                     .attr("xmlns", "http://www.w3.org/2000/svg")
                     .node().parentNode.innerHTML;
-
+                console.log(html);
                 var imgsrc = 'data:image/svg+xml;base64,'+ btoa(unescape(encodeURIComponent(html)));
                 console.log(imgsrc);
                 var canvas = document.querySelector("canvas"),
