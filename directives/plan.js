@@ -53,6 +53,7 @@ angular.module('dowsing').directive('plan', function() {
 			.attr("d", arc);
 
 		arcs.append('g').attr("class", "radie-label")
+			
 			.append("foreignObject")
 			.attr("width", function(d) {
 				return (title) ? r - ir - 30 : r - ir - 60;
@@ -62,7 +63,7 @@ angular.module('dowsing').directive('plan', function() {
 				d.outerRadius = r + 50;
 				d.innerRadius = r + 45;
 				var c = arc.centroid(d);	
-				return "translate(" + c[0] + "," + c[1] + ") rotate(" + angle(d) + ")";
+				//return "translate(" + c[0] + "," + c[1] + ") rotate(" + angle(d) + ")";
 				
 				if (leftToRight(d)) {
 				
